@@ -1,21 +1,18 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 int main()
 {
-    auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
-    window.setFramerateLimit(144);
+    sf::Window win(sf::VideoMode({729, 729}), "Area Calculator");
 
-    while (window.isOpen())
+    while (win.isOpen())
     {
-        while (const std::optional event = window.pollEvent())
+        // checks all the window's events that triggered since the
+        // previous iteration of the loop
+        while (const std::optional event = win.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
-            {
-                window.close();
-            }
+                win.close();
         }
-
-        window.clear();
-        window.display();
     }
 }
