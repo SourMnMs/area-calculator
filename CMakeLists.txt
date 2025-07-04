@@ -12,6 +12,10 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(AreaCalculator src/main.cpp)
+add_executable(AreaCalculator src/main.cpp
+        src/formulas.h
+        src/ACPoint.cpp
+        src/ACPoint.h
+)
 target_compile_features(AreaCalculator PRIVATE cxx_std_17)
 target_link_libraries(AreaCalculator PRIVATE SFML::Graphics)
