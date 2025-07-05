@@ -16,6 +16,8 @@ add_executable(AreaCalculator src/main.cpp
         include/formulas.h
         src/ACPoint.cpp
         include/ACPoint.h
+        include/ACLine.h
+        src/ACLine.cpp
 )
 target_compile_features(AreaCalculator PRIVATE cxx_std_17)
 target_link_libraries(AreaCalculator PRIVATE SFML::Graphics)

@@ -6,6 +6,7 @@
 
 #include "../include/formulas.h"
 #include "../include/ACPoint.h"
+#include "../include/ACLine.h"
 
 int main()
 {
@@ -15,7 +16,8 @@ int main()
 
     /*================== Object Setup ==================*/
     std::vector<ACPoint> points;
-    const ACPoint *closestToMouse = nullptr;
+    ACPoint *closestToMouse = nullptr;
+    ACPoint *draggingPoint = nullptr;
     /*==================================================*/
 
 
@@ -39,6 +41,7 @@ int main()
                     const sf::Vector2f& eventPos = sf::Vector2f(mouseButtonPressed->position);
                     if (closestToMouse && closestToMouse->getCollider().contains(eventPos))
                     {
+                        draggingPoint = closestToMouse;
                         std::cout << "mouse click within position" << std::endl;
                     }
                 }
@@ -52,6 +55,21 @@ int main()
                 }
             }
 
+            // mouse released
+            if (const auto* mouseButtonReleased = event->getIf<sf::Event::MouseButtonReleased>())
+            {
+                if (mouseButtonReleased->button == sf::Mouse::Button::Left)
+                {
+                    draggingPoint = nullptr;
+                }
+            }
+
+            if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
+            {
+                if (draggingPoint)
+                    draggingPoint->moveTo(sf::Vector2f(mouseMoved->position));
+            }
+
         }
 
 
@@ -59,19 +77,30 @@ int main()
         win.clear(sf::Color::White);
 
         const sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(win));
-        for (ACPoint& p : points)
-        {
-            win.draw(p.circle());
 
+        const unsigned long long n = points.size();
+        for (int i = 0; i < n; i++)
+        {
             if (closestToMouse)
             {
-                const sf::Vector2f pointPos = p.getPosition();
+                const sf::Vector2f pointPos = points[i].getPosition();
                 const double pmDist = formulas::point::distance(pointPos, mousePos);
                 const double cmDist = formulas::point::distance(closestToMouse->getPosition(), mousePos);
                 if (pmDist < cmDist)
-                    closestToMouse = &p;
+                    closestToMouse = &points[i];
+            }
+            win.draw(points[i].circle());
+
+            // TODO: MAKE THIS ONE LINE WITH MANY SEGMENTS, NOT MULTIPLE LINES
+            if (n > 1)
+            {
+                const ACPoint& prev = points[((i-1==-1)?n:i) - 1];
+                ACLine line(prev, points[i]);
+                line.draw(win);
             }
         }
+
+
 
         win.display();
         /*========================================================*/

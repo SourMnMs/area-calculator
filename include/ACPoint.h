@@ -5,6 +5,7 @@
 #ifndef ACPOINT_H
 #define ACPOINT_H
 #include "SFML/Graphics/CircleShape.hpp"
+#include "SFML/Graphics/Transformable.hpp"
 
 
 class ACPoint : public sf::Transformable {
