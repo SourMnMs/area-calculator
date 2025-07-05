@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "ACPoint.h"
+#include "../include/formulas.h"
+#include "../include/ACPoint.h"
 
 int main()
 {
@@ -14,10 +15,7 @@ int main()
 
     /*================== Object Setup ==================*/
     std::vector<ACPoint> points;
-
-    // sf::CircleShape myCircle(5.f);
-    // myCircle.setFillColor(sf::Color(100, 250, 50));
-
+    const ACPoint *closestToMouse = nullptr;
     /*==================================================*/
 
 
@@ -35,40 +33,44 @@ int main()
             // mouse pressed
             if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
             {
+                // left click -> check if it was on the closest point to mouse
                 if (mouseButtonPressed->button == sf::Mouse::Button::Left)
                 {
-                    const sf::Vector2f eventPos = sf::Vector2f(mouseButtonPressed->position);
-                    for (int i = 0; i < points.size(); i++)
+                    const sf::Vector2f& eventPos = sf::Vector2f(mouseButtonPressed->position);
+                    if (closestToMouse && closestToMouse->getCollider().contains(eventPos))
                     {
-                        if (points[i].eventPosWithinRange(eventPos))
-                        {
-                            std::cout << "mouse click within position" << std::endl;
-                            break;
-                        }
+                        std::cout << "mouse click within position" << std::endl;
                     }
                 }
+
+                // right click -> make new point, set it as closest point to mouse
                 if (mouseButtonPressed->button == sf::Mouse::Button::Right)
                 {
-                    ACPoint newPoint(10.f, sf::Vector2f(mouseButtonPressed->position));
+                    ACPoint newPoint(5.f, sf::Vector2f(mouseButtonPressed->position));
                     points.push_back(newPoint);
+                    closestToMouse = &points[points.size()-1];
                 }
             }
 
-            // // mouse moved
-            // if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
-            // {
-            //
-            // }
-            /*====================================================*/
         }
 
 
         /*================== Clear-Draw-Display ==================*/
-        win.clear(sf::Color::Black);
+        win.clear(sf::Color::White);
 
-        for (int i = 0; i < points.size(); i++)
+        const sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(win));
+        for (ACPoint& p : points)
         {
-            win.draw(points[i].circle());
+            win.draw(p.circle());
+
+            if (closestToMouse)
+            {
+                const sf::Vector2f pointPos = p.getPosition();
+                const double pmDist = formulas::point::distance(pointPos, mousePos);
+                const double cmDist = formulas::point::distance(closestToMouse->getPosition(), mousePos);
+                if (pmDist < cmDist)
+                    closestToMouse = &p;
+            }
         }
 
         win.display();

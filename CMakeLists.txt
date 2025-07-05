@@ -13,9 +13,9 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable(AreaCalculator src/main.cpp
-        src/formulas.h
+        include/formulas.h
         src/ACPoint.cpp
-        src/ACPoint.h
+        include/ACPoint.h
 )
 target_compile_features(AreaCalculator PRIVATE cxx_std_17)
 target_link_libraries(AreaCalculator PRIVATE SFML::Graphics)
