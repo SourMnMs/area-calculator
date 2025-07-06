@@ -29,7 +29,7 @@ namespace formulas
         }
         inline double circle(const double radius)
         {
-            return M_PI * radius * radius;
+            return sf::priv::pi * radius * radius;
         }
         inline double rectangle(const double base, const double height)
         {
@@ -45,7 +45,7 @@ namespace formulas
         }
         inline double circle(const double radius)
         {
-            return M_PI * 2 * radius;
+            return sf::priv::pi * 2 * radius;
         }
     }
 }
