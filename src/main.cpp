@@ -10,7 +10,9 @@
 
 int main()
 {
+    std::cout << "started the program" << std::endl;
     sf::RenderWindow win(sf::VideoMode({729, 729}), "Area Calculator", sf::Style::Close);
+    std::cout << "made a window" << std::endl;
     // win.setPosition({200, 50});
     win.setVerticalSyncEnabled(true);
 
@@ -42,7 +44,7 @@ int main()
                     if (closestToMouse && closestToMouse->getCollider().contains(eventPos))
                     {
                         draggingPoint = closestToMouse;
-                        std::cout << "mouse click within position" << std::endl;
+                        std::cout << "mouse click (" << eventPos.x << ", " << eventPos.y << ")" << std::endl;
                     }
                 }
 
