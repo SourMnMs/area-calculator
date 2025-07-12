@@ -13,6 +13,7 @@ int main()
     std::cout << "started the program" << std::endl;
     sf::RenderWindow win(sf::VideoMode({729, 729}), "Area Calculator", sf::Style::Close);
     std::cout << "made a window" << std::endl;
+
     // win.setPosition({200, 50});
     win.setVerticalSyncEnabled(true);
 
