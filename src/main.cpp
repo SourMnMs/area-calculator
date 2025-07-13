@@ -8,6 +8,15 @@
 #include "../include/ACPoint.h"
 #include "../include/ACLine.h"
 
+/*
+ * Alright this absolutely does not make sense but bear with me for a second
+ * To make the .exe runnable, go into CLion's settings
+ * Build, Execution, Deployment -> ToolChains -> MinGW
+ * Change the C and C++ compilers to gcc.exe and g++.exe respectively (ucrt)
+ * Rebuild the project, the executable should be runnable
+ * To make it runnable within the IDE, change both of them to "Let CMake detect"
+*/
+
 int main()
 {
     std::cout << "started the program" << std::endl;
@@ -18,6 +27,13 @@ int main()
     win.setVerticalSyncEnabled(true);
 
     /*================== Object Setup ==================*/
+    sf::RectangleShape dispAxisX({729, 2});
+    dispAxisX.setPosition({0, 363.5});
+    dispAxisX.setFillColor(sf::Color::Black);
+    sf::RectangleShape dispAxisY({2, 729});
+    dispAxisY.setPosition({363.5, 0});
+    dispAxisY.setFillColor(sf::Color::Black);
+
     std::vector<ACPoint> points;
     ACPoint *closestToMouse = nullptr;
     ACPoint *draggingPoint = nullptr;
@@ -97,12 +113,14 @@ int main()
             // TODO: MAKE THIS ONE LINE WITH MANY SEGMENTS, NOT MULTIPLE LINES
             if (n > 1)
             {
-                const ACPoint& prev = points[((i-1==-1)?n:i) - 1];
+                const ACPoint& prev = points[((i-1==-1) ? n : i) - 1];
                 ACLine line(prev, points[i]);
                 line.draw(win);
             }
         }
-
+        // axes
+        win.draw(dispAxisX);
+        win.draw(dispAxisY);
 
 
         win.display();
