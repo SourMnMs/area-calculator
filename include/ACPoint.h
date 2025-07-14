@@ -7,13 +7,13 @@
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/Transformable.hpp"
 
+// This class handles the draggable points
 
 class ACPoint : public sf::Transformable {
 private:
     sf::CircleShape dispCircle;
     sf::FloatRect collider;
     float radius;
-
 public:
     ACPoint(float radius, sf::Vector2f pos);
 
@@ -27,7 +27,6 @@ public:
     {
         return dispCircle;
     }
-
 };
 
 

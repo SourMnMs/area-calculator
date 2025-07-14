@@ -4,8 +4,6 @@
 
 #include "../include/ACLine.h"
 
-// TODO: MAKE THIS ONE LINE WITH MANY SEGMENTS, NOT MULTIPLE LINES
-
 ACLine::ACLine(const ACPoint& a, const ACPoint& b)
 {
     line[0] = sf::Vertex{a.getPosition(), sf::Color::Red};

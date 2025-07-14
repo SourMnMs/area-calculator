@@ -10,12 +10,14 @@
 
 /*
  * Alright this absolutely does not make sense but bear with me for a second
- * To make the .exe runnable, go into CLion's settings
+ * To make the built .exe runnable, go into CLion's settings
  * Build, Execution, Deployment -> ToolChains -> MinGW
  * Change the C and C++ compilers to gcc.exe and g++.exe respectively (ucrt)
- * Rebuild the project, the executable should be runnable
+ * Rebuild the project, the executable should now be runnable
  * To make it runnable within the IDE, change both of them to "Let CMake detect"
 */
+
+// TODO: MAKE A LOCAL COORDINATE SYSTEM THAT CAN BE MAPPED TO WINDOW COORDINATES
 
 int main()
 {
@@ -110,13 +112,13 @@ int main()
             }
             win.draw(points[i].circle());
 
-            // TODO: MAKE THIS ONE LINE WITH MANY SEGMENTS, NOT MULTIPLE LINES
-            if (n > 1)
-            {
-                const ACPoint& prev = points[((i-1==-1) ? n : i) - 1];
-                ACLine line(prev, points[i]);
-                line.draw(win);
-            }
+            // TO/DO: MAKE THIS ONE LINE WITH MANY SEGMENTS, NOT MULTIPLE LINES
+            // if (n > 1)
+            // {
+            //     const ACPoint& prev = points[((i-1==-1) ? n : i) - 1];
+            //     ACLine line(prev, points[i]);
+            //     line.draw(win);
+            // }
         }
         // axes
         win.draw(dispAxisX);
