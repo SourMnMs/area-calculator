@@ -48,6 +48,18 @@ namespace formulas
             return sf::priv::pi * 2 * radius;
         }
     }
+
+    namespace nums
+    {
+        inline int range(const int x, const int y)
+        {
+            return abs(x) + abs(y);
+        }
+        inline double range(const double x, const double y)
+        {
+            return abs(x) + abs(y);
+        }
+    }
 }
 
 #endif //FORMULAS_H

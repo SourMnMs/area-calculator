@@ -14,7 +14,7 @@ private:
 
     void init();
 public:
-    explicit ACTriangle(const std::array<ACPoint, 3>& v);
+    // explicit ACTriangle(const std::array<ACPoint, 3>& v);
     ACTriangle(const ACPoint& a, const ACPoint& b, const ACPoint& c);
     ACTriangle(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Vector2f& c);
 
