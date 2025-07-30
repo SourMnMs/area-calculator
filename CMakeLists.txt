@@ -31,7 +31,6 @@ add_executable(AreaCalculator src/main.cpp
         include/ACGrid.h
         src/ACGrid.cpp
         include/winsize.h
-        include/LinkedList.h
         include/circvec.h
 )
 target_compile_features(AreaCalculator PRIVATE cxx_std_17)
