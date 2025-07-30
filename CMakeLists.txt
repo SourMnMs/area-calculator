@@ -32,6 +32,7 @@ add_executable(AreaCalculator src/main.cpp
         src/ACGrid.cpp
         include/winsize.h
         include/circvec.h
+        include/gridsize.h
 )
 target_compile_features(AreaCalculator PRIVATE cxx_std_17)
 target_link_libraries(AreaCalculator PRIVATE SFML::Graphics SFML::Window SFML::System)

@@ -15,9 +15,6 @@ namespace winsize
     constexpr sf::Vector2 v{width, height};
     constexpr sf::Vector2i vi{width, height};
     constexpr sf::Vector2f vf{width, height};
-
-    constexpr sf::Vector2f rangeX = {0, 5};
-    constexpr sf::Vector2f rangeY = {0, 5};
 }
 
 #endif //WINSIZE_H

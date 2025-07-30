@@ -3,6 +3,9 @@
 //
 
 #include "../include/ACGrid.h"
+
+#include <iostream>
+
 #include "../include/formulas.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 
@@ -23,8 +26,8 @@ void ACGrid::adjustY(const sf::Vector2f y)
 // a point in the same location on the local coordinate system
 sf::Vector2f ACGrid::convertPointToLocal(const sf::Vector2f p) const
 {
-    const float s_x = formulas::nums::range(rangeY.x, rangeY.y);
-    const float s_y = formulas::nums::range(rangeX.x, rangeX.y);
+    const float s_x = formulas::nums::range(rangeX.x, rangeX.y);
+    const float s_y = formulas::nums::range(rangeY.x, rangeY.y);
     const sf::Vector2f midp{(rangeX.x+rangeX.y)/2, (rangeY.x+rangeY.y)/2};
 
     const float x = p.x / winsize::width * s_x;
@@ -37,8 +40,8 @@ sf::Vector2f ACGrid::convertPointToLocal(const sf::Vector2f p) const
 // in the same location on the window's coordinate system
 sf::Vector2f ACGrid::convertPointToGlobal(const sf::Vector2f p) const
 {
-    const float s_x = formulas::nums::range(rangeY.x, rangeY.y);
-    const float s_y = formulas::nums::range(rangeX.x, rangeX.y);
+    const float s_x = formulas::nums::range(rangeX.x, rangeX.y);
+    const float s_y = formulas::nums::range(rangeY.x, rangeY.y);
     const sf::Vector2f midp{(rangeX.x+rangeX.y)/2, (rangeY.x+rangeY.y)/2};
 
     const float mx = winsize::width / s_x;

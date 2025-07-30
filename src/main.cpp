@@ -10,6 +10,7 @@
 #include "../include/ACLine.h"
 #include "../include/ACShape.h"
 #include "../include/ACTriangle.h"
+#include "../include/gridsize.h"
 #include "../include/winsize.h"
 
 /*
@@ -21,6 +22,8 @@
  * To make it runnable within the IDE, change both of them to "Let CMake detect"
 */
 
+// TODO: AREA CALCULATION POSSIBLE NO MATTER THE LOCATION OF THE ORIGINAL POINT
+
 int main()
 {
     std::cout << "started the program" << std::endl;
@@ -31,7 +34,7 @@ int main()
     win.setVerticalSyncEnabled(true);
 
     /*================== Object Setup ==================*/
-    ACGrid grid{winsize::rangeX, winsize::rangeY};
+    ACGrid grid{gridsize::rangeX, gridsize::rangeY};
 
     std::vector<ACPoint> points;
     ACPoint *closestToMouse = nullptr;
@@ -58,6 +61,7 @@ int main()
                 {
                     const sf::Vector2f& eventPos = sf::Vector2f(mouseButtonPressed->position);
 
+                    std::cout << "mouse click (" << eventPos.x << ", " << eventPos.y << ")" << std::endl;
                     const sf::Vector2f localP = grid.convertPointToLocal(eventPos);
                     std::cout << "local: (" << localP.x << ", " << localP.y << ")" << std::endl;
 
