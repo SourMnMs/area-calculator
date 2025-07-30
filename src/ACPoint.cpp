@@ -5,18 +5,12 @@
 #include "../include/ACPoint.h"
 
 
-ACPoint::ACPoint(const float radius, const sf::Vector2f pos)
+ACPoint::ACPoint(const float radius, const sf::Vector2f pos, const ACGrid& g): radius(radius), g(g)
 {
-    this->radius = radius;
-
-    setPosition(pos);
-    updateCollider();
-
     dispCircle = sf::CircleShape(radius);
     dispCircle.setFillColor(sf::Color(25, 113, 255));
 
-    // this setPos is bcz the normal setPos starts in the top-left "corner" of the circle
-    dispCircle.setPosition({pos.x-radius, pos.y-radius});
+    moveTo(pos);
 }
 
 
@@ -30,6 +24,7 @@ void ACPoint::updateCollider()
 void ACPoint::moveTo(const sf::Vector2f pos)
 {
     setPosition(pos);
+    localPos = g.convertPointToLocal(pos);
     updateCollider();
     dispCircle.setPosition({pos.x-radius, pos.y-radius});
 }

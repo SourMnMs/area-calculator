@@ -4,9 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include "../include/ACGrid.h"
 #include "../include/formulas.h"
 #include "../include/ACPoint.h"
 #include "../include/ACLine.h"
+#include "../include/ACShape.h"
+#include "../include/ACTriangle.h"
+#include "../include/winsize.h"
 
 /*
  * Alright this absolutely does not make sense but bear with me for a second
@@ -17,24 +21,17 @@
  * To make it runnable within the IDE, change both of them to "Let CMake detect"
 */
 
-// TODO: MAKE A LOCAL COORDINATE SYSTEM THAT CAN BE MAPPED TO WINDOW COORDINATES
-
 int main()
 {
     std::cout << "started the program" << std::endl;
-    sf::RenderWindow win(sf::VideoMode({729, 729}), "Area Calculator", sf::Style::Close);
+    sf::RenderWindow win(sf::VideoMode(winsize::v), "Area Calculator", sf::Style::Close);
     std::cout << "made a window" << std::endl;
 
     // win.setPosition({200, 50});
     win.setVerticalSyncEnabled(true);
 
     /*================== Object Setup ==================*/
-    sf::RectangleShape dispAxisX({729, 2});
-    dispAxisX.setPosition({0, 363.5});
-    dispAxisX.setFillColor(sf::Color::Black);
-    sf::RectangleShape dispAxisY({2, 729});
-    dispAxisY.setPosition({363.5, 0});
-    dispAxisY.setFillColor(sf::Color::Black);
+    ACGrid grid{winsize::rangeX, winsize::rangeY};
 
     std::vector<ACPoint> points;
     ACPoint *closestToMouse = nullptr;
@@ -60,6 +57,10 @@ int main()
                 if (mouseButtonPressed->button == sf::Mouse::Button::Left)
                 {
                     const sf::Vector2f& eventPos = sf::Vector2f(mouseButtonPressed->position);
+
+                    const sf::Vector2f localP = grid.convertPointToLocal(eventPos);
+                    std::cout << "local: (" << localP.x << ", " << localP.y << ")" << std::endl;
+
                     if (closestToMouse && closestToMouse->getCollider().contains(eventPos))
                     {
                         draggingPoint = closestToMouse;
@@ -70,7 +71,7 @@ int main()
                 // right click -> make new point, set it as closest point to mouse
                 if (mouseButtonPressed->button == sf::Mouse::Button::Right)
                 {
-                    ACPoint newPoint(5.f, sf::Vector2f(mouseButtonPressed->position));
+                    ACPoint newPoint(5.f, sf::Vector2f(mouseButtonPressed->position), grid);
                     points.push_back(newPoint);
                     closestToMouse = &points[points.size()-1];
                 }
@@ -91,6 +92,18 @@ int main()
                     draggingPoint->moveTo(sf::Vector2f(mouseMoved->position));
             }
 
+            if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            {
+                if (keyPressed->scancode == sf::Keyboard::Scan::Enter)
+                {
+                    if (points.size() >= 3)
+                    {
+                        ACShape shape{points};
+                        std::cout << shape.getArea(grid) << std::endl;
+                    }
+                }
+            }
+
         }
 
 
@@ -99,9 +112,15 @@ int main()
 
         const sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(win));
 
+        // axes
+        grid.draw(win);
+
+        // point update loop
         const unsigned long long n = points.size();
         for (int i = 0; i < n; i++)
         {
+            // gets point closest to mouse by checking if the point's distance
+            // to the mouse is less than the current closest point's distance
             if (closestToMouse)
             {
                 const sf::Vector2f pointPos = points[i].getPosition();
@@ -113,17 +132,13 @@ int main()
             win.draw(points[i].circle());
 
             // TO/DO: MAKE THIS ONE LINE WITH MANY SEGMENTS, NOT MULTIPLE LINES
-            // if (n > 1)
-            // {
-            //     const ACPoint& prev = points[((i-1==-1) ? n : i) - 1];
-            //     ACLine line(prev, points[i]);
-            //     line.draw(win);
-            // }
+            if (n > 1)
+            {
+                const ACPoint& prev = points[((i-1==-1) ? n : i) - 1];
+                ACLine line(prev, points[i]);
+                line.draw(win);
+            }
         }
-        // axes
-        win.draw(dispAxisX);
-        win.draw(dispAxisY);
-
 
         win.display();
         /*========================================================*/
