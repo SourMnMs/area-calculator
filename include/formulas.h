@@ -19,6 +19,10 @@ namespace formulas
         {
             return {(a.x+b.x)/2, (a.y+b.y)/2};
         }
+        inline bool isConcaveAngle(const sf::Vector2f A, const sf::Vector2f B, const sf::Vector2f C)
+        {
+            return (A-B).cross(C-B) < 0;
+        }
     }
 
     namespace area
@@ -26,6 +30,10 @@ namespace formulas
         inline double triangle(const double base, const double height)
         {
             return 0.5 * base * height;
+        }
+        inline double triangle(const sf::Vector2f A, const sf::Vector2f B, const sf::Vector2f C)
+        {
+            return 0.5 * abs(A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y - B.y));
         }
         inline double circle(const double radius)
         {

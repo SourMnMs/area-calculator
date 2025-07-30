@@ -15,8 +15,8 @@ class ACGrid
 private:
     sf::RectangleShape axisX{{winsize::width, 2}};
     sf::RectangleShape axisY{{2, winsize::height}};
-    const float modX = axisX.getSize().y/2;
-    const float modY = axisY.getSize().x/2;
+    float modX = axisX.getSize().y/2;
+    float modY = axisY.getSize().x/2;
 
     sf::Vector2f rangeX;
     sf::Vector2f rangeY;

@@ -37,26 +37,5 @@ public:
     }
 };
 
-struct ACPListNode
-{
-    ACPListNode* prev;
-    ACPListNode* next;
-    const ACPoint* point;
-
-    ACPListNode(const ACPoint& p)
-    {
-        prev = this;
-        next = this;
-        point = &p;
-    }
-    void addNode(ACPListNode& n)
-    {
-        n.prev = this;
-        n.next = next;
-        next->prev = &n;
-        next = &n;
-    }
-};
-
 
 #endif //ACPOINT_H

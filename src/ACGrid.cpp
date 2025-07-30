@@ -33,7 +33,7 @@ sf::Vector2f ACGrid::convertPointToLocal(const sf::Vector2f p) const
     return sf::Vector2f{x,y} + midp - sf::Vector2f{s_x/2, s_y/2};
 }
 
-// Converts a given pint on the local coordinate system to a point
+// Converts a given point on the local coordinate system to a point
 // in the same location on the window's coordinate system
 sf::Vector2f ACGrid::convertPointToGlobal(const sf::Vector2f p) const
 {

@@ -7,6 +7,8 @@
 #include "SFML/Graphics/ConvexShape.hpp"
 #include "ACPoint.h"
 
+// Takes in global coordinates
+
 class ACTriangle : sf::ConvexShape
 {
 private:
@@ -18,7 +20,10 @@ public:
     ACTriangle(const ACPoint& a, const ACPoint& b, const ACPoint& c);
     ACTriangle(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Vector2f& c);
 
-    double getArea() const;
+    double getArea();
+    double getLocalArea(const ACGrid& g);
+    bool pointInsideTriangle(const ACPoint& p);
+    bool triangleHasPoint(const ACPoint& p);
 };
 
 #endif //ACTRIANGLE_H

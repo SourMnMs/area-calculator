@@ -8,6 +8,7 @@
 #include "../include/formulas.h"
 #include "../include/ACPoint.h"
 #include "../include/ACLine.h"
+#include "../include/ACShape.h"
 #include "../include/ACTriangle.h"
 #include "../include/winsize.h"
 
@@ -30,7 +31,7 @@ int main()
     win.setVerticalSyncEnabled(true);
 
     /*================== Object Setup ==================*/
-    ACGrid grid{{0, 5}, {0, 5}};
+    ACGrid grid{winsize::rangeX, winsize::rangeY};
 
     std::vector<ACPoint> points;
     ACPoint *closestToMouse = nullptr;
@@ -56,13 +57,14 @@ int main()
                 if (mouseButtonPressed->button == sf::Mouse::Button::Left)
                 {
                     const sf::Vector2f& eventPos = sf::Vector2f(mouseButtonPressed->position);
+
+                    const sf::Vector2f localP = grid.convertPointToLocal(eventPos);
+                    std::cout << "local: (" << localP.x << ", " << localP.y << ")" << std::endl;
+
                     if (closestToMouse && closestToMouse->getCollider().contains(eventPos))
                     {
                         draggingPoint = closestToMouse;
                         std::cout << "mouse click (" << eventPos.x << ", " << eventPos.y << ")" << std::endl;
-
-                        const sf::Vector2f localP = grid.convertPointToLocal(eventPos);
-                        std::cout << "local: (" << localP.x << ", " << localP.y << ")" << std::endl;
                     }
                 }
 
@@ -88,6 +90,18 @@ int main()
             {
                 if (draggingPoint)
                     draggingPoint->moveTo(sf::Vector2f(mouseMoved->position));
+            }
+
+            if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            {
+                if (keyPressed->scancode == sf::Keyboard::Scan::Enter)
+                {
+                    if (points.size() >= 3)
+                    {
+                        ACShape shape{points};
+                        std::cout << shape.getArea(grid) << std::endl;
+                    }
+                }
             }
 
         }
@@ -118,12 +132,12 @@ int main()
             win.draw(points[i].circle());
 
             // TO/DO: MAKE THIS ONE LINE WITH MANY SEGMENTS, NOT MULTIPLE LINES
-            // if (n > 1)
-            // {
-            //     const ACPoint& prev = points[((i-1==-1) ? n : i) - 1];
-            //     ACLine line(prev, points[i]);
-            //     line.draw(win);
-            // }
+            if (n > 1)
+            {
+                const ACPoint& prev = points[((i-1==-1) ? n : i) - 1];
+                ACLine line(prev, points[i]);
+                line.draw(win);
+            }
         }
 
         win.display();
